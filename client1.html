@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript">
+			var socketio = io.connect("http://main.js.nodejitsu.com");
+		socketio.on("message_to_client", function(data) {
+		var trans = JSON.parse(data);
+var m = trans['e'];
+var n = trans['f'];
+var o = trans['g'];
+var p = trans['h'];
+var q=trans['i'];
+    document.getElementById("chatlog").innerHTML = ("<hr/>" +
+  m+''+n+''+''+o+''+q+''+p+'' + document.getElementById("chatlog").innerHTML);
+});
+function sendMessage()
+{				a=document.getElementById("name").value;
+				b=":";
+				c=document.getElementById("message_input").value;
+				d=new Date().getDate() + "/"
+                + (new Date().getMonth()+1)  + "/" 
+                + new Date().getFullYear() + " @ "  
+                + new Date().getHours() + ":"  
+                +new Date().getMinutes() + ":" 
+                + new Date().getSeconds();
+				s='      ';
+				var obj = {e:a,f:b,g:c,h:d,i:s};
+var jsonData = JSON.stringify(obj);
+socketio.emit("message_to_server",jsonData);
+document.getElementById("message_input").value=' ';
+}
+        </script>
+    </head>
+    <body>
+	Name:<input type="text" id="name">
+        Message:<input type="text" id="message_input" onkeypress="if(event.keyCode==13){sendMessage();}" value=" " />
+        <button onclick="sendMessage()">send</button>
+        <div id="chatlog" ></div>
+		 
+    </body>
+</html>
